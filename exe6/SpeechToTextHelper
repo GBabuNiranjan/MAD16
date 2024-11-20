@@ -1,0 +1,31 @@
+public class SpeechToTextHelper implements 
+RecognitionListener {
+private SpeechRecognizer speechRecognizer;
+private OnSpeechRecognitionListener listener;
+public void initSpeechToText(Context context) {
+speechRecognizer = 
+SpeechRecognizer.createSpeechRecognizer(context);
+speechRecognizer.setRecognitionListener(this); }
+public void startSpeechRecognition() {
+Intent intent = new 
+Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEE
+CH);
+intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE
+_MODEL, 
+RecognizerIntent.LANGUAGE_MODEL_FREE_FORM
+);
+intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, 
+Locale.getDefault());
+speechRecognizer.startListening(intent); }
+public void 
+setOnSpeechRecognitionListener(OnSpeechRecognition
+Listener listener) {
+this.listener = listener; 
+@Override public void onResults(Bundle results) { 
+ArrayList<String> recognizedText = 
+results.getStringArrayList(SpeechRecognizer.RESULTS
+_RECOGNITION);
+if (listener != null && recognizedText != null && 
+!recognizedText.isEmpty()) {
+listener.onSpeechRecognized(recognizedText.get(0)); } } 
+}
