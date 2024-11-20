@@ -1,0 +1,27 @@
+package com.example.exe05;
+import android.content.Context;
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+import java.util.Locale;
+public class TextToSpeechHelper {
+private TextToSpeech textToSpeech;
+public void initTextToSpeech(Context context) {
+textToSpeech = new TextToSpeech(context, status -> {
+if (status == TextToSpeech.SUCCESS) { int result = 
+textToSpeech.setLanguage(Locale.getDefault());
+if (result == TextToSpeech.LANG_MISSING_DATA || 
+result == TextToSpeech.LANG_NOT_SUPPORTED) {
+Log.e("TTS", "Language not supported"); }
+} else {
+Log.e("TTS", "Initialization failed");}});}
+public void speakText(String text) {
+if (text != null && !text.isEmpty()) {
+Log.d("TTS", "Speaking text: " + text);
+textToSpeech.speak(text, 
+TextToSpeech.QUEUE_FLUSH, null, null);
+} else {
+Log.e("TTS", "Text is empty or null"); } }
+public void shutdown() {
+if (textToSpeech != null) {
+textToSpeech.stop();
+textToSpeech.shutdown();}}}
